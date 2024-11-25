@@ -1,5 +1,3 @@
 package com.pdm.cher.reversi
 
-interface Player{
-
-}
+data class Player(val color: Color)

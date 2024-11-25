@@ -1,6 +1,3 @@
 package com.pdm.cher.reversi
 
-interface Piece {
-    val position: Pair<Row, Column>
-
-}
+data class Piece(val color: Color)

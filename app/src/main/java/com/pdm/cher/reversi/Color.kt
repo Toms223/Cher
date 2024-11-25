@@ -1,6 +1,6 @@
 package com.pdm.cher.reversi
 
-enum class PieceColor: Piece {
+enum class Color {
     BLACK,
     WHITE
 }
