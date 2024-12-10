@@ -1,57 +1,55 @@
 package com.pdm.cher
 
+
 import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Button
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
-import com.pdm.cher.activities.CreditsActivity
+import com.google.firebase.FirebaseApp
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.storage.FirebaseStorage
+import com.pdm.cher.activities.PlayerPageActivity
 import com.pdm.cher.ui.theme.CherTheme
+import com.pdm.cher.screen.HelloPageScreen
+import com.pdm.cher.viewmodels.FirebaseResult
+import com.pdm.cher.viewmodels.PlayerInformationViewModel
 
-class MainActivity : ComponentActivity() {
+class MainActivity: ComponentActivity() {
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
+        FirebaseApp.initializeApp(this)
+        val auth = FirebaseAuth.getInstance()
+        val firestore = FirebaseFirestore.getInstance()
+        val storage = FirebaseStorage.getInstance()
+        val playerInformationViewModel = PlayerInformationViewModel(firestore, auth, storage)
         super.onCreate(savedInstanceState)
-        actionBar?.hide()
-        setContent {
-            CherTheme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    Column {
-                        Greeting(
-                            name = "Android",
-                            modifier = Modifier.padding(innerPadding)
-                        )
-                        Button(onClick = {
-                            startActivity(Intent(this@MainActivity, CreditsActivity::class.java))
-                        }) {
-                            Text("Go to Credits")
+        val user = auth.currentUser
+        if (user != null && user.email != null) {
+            playerInformationViewModel.getPlayer(user.email!!) { result ->
+                if(result is FirebaseResult.Success) {
+                    startActivity(Intent(this, PlayerPageActivity::class.java).putExtra("player", result.data))
+                    finish()
+                } else {
+                    setContent {
+                        CherTheme {
+                            HelloPageScreen(this)
                         }
                     }
+                }
+            }
+        }
+        actionBar?.hide()
+        if(user == null) {
+            setContent {
+                CherTheme {
+                    HelloPageScreen(this)
                 }
             }
         }
     }
 }
 
-@Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
-}
 
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    CherTheme {
-        Greeting("Android")
-    }
-}
+

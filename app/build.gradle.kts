@@ -3,6 +3,7 @@ plugins {
     id("org.jetbrains.kotlin.android")
     id("org.jetbrains.kotlin.plugin.compose")
     id("com.google.gms.google-services")
+    id("kotlin-parcelize")
 }
 
 android {
@@ -39,6 +40,7 @@ android {
 }
 
 dependencies {
+    implementation("com.google.firebase:firebase-storage-ktx")
     androidTestImplementation("androidx.test:core:1.6.1")
     implementation("com.google.firebase:firebase-firestore")
     implementation(platform("com.google.firebase:firebase-bom:33.6.0"))
@@ -52,8 +54,7 @@ dependencies {
     testImplementation("androidx.test:runner:1.6.2")
     testImplementation("androidx.test:rules:1.6.1")
     implementation("androidx.compose.ui:ui")
-    testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-core")
-    testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test")
+    implementation("com.google.firebase:firebase-auth")
     testImplementation("org.jetbrains.kotlin:kotlin-test")
     implementation("androidx.compose.ui:ui-graphics")
     implementation("androidx.compose.ui:ui-tooling-preview")

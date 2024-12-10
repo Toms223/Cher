@@ -1,15 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools" >
-
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" android:maxSdkVersion="32"/>
+    <uses-permission android:name="android.permission.READ_MEDIA_IMAGES"/>
+    <uses-permission android:name="android.permission.READ_MEDIA_VISUAL_USER_SELECTED"/>
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         tools:targetApi="31" >
-        <activity
-            android:name=".activities.CreditsActivity"
-            android:exported="true">
-        </activity>
+        <activity android:name=".activities.PlayerPageActivity"/>
+        <activity android:name=".activities.GameActivity"/>
+        <activity android:name=".activities.LoginActivity"/>
+        <activity android:name=".activities.RegisterActivity"/>
+        <activity android:name=".activities.LobbyActivity"/>
+        <activity android:name=".activities.GameReplayActivity"/>
         <activity
             android:name=".MainActivity"
             android:exported="true"

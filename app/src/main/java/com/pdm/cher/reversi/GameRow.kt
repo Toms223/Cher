@@ -4,4 +4,4 @@ import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
-data class Square(val row: Int = 0, val col: Int = 0, val color: Color? = null) : Parcelable
+data class GameRow(val list: List<Square> = emptyList()): Parcelable

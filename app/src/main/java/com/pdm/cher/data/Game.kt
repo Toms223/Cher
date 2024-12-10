@@ -1,5 +1,13 @@
 package com.pdm.cher.data
 
+import android.os.Parcelable
 import com.pdm.cher.reversi.Reversi
+import kotlinx.parcelize.Parcelize
 
-data class Game(val playerBlackId: Int = 0, val playerWhiteId: Int = 0, val reversi: Reversi = Reversi())
+@Parcelize
+data class Game(
+    val playerBlackEmail: String = "",
+    val playerWhiteEmail: String = "",
+    val reversi: Reversi = Reversi(),
+    val id : String = "#${(0..1000000).random()}"
+): Parcelable
