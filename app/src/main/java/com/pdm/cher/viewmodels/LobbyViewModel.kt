@@ -5,7 +5,6 @@ import androidx.lifecycle.viewModelScope
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
-import com.pdm.cher.data.Game
 import com.pdm.cher.data.Invite
 import com.pdm.cher.data.Player
 import com.pdm.cher.firebase.ReversiFirebase

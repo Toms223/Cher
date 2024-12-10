@@ -13,7 +13,6 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.pdm.cher.R
-import com.pdm.cher.data.Game
 import com.pdm.cher.data.Player
 import com.pdm.cher.reversi.Color
 

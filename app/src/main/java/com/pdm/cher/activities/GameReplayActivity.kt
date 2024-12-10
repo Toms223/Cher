@@ -16,7 +16,6 @@ import com.pdm.cher.ui.theme.CherTheme
 import com.pdm.cher.viewmodels.FavoriteGamesViewModel
 import com.pdm.cher.viewmodels.FirebaseResult
 import com.pdm.cher.viewmodels.PlayerInformationViewModel
-import kotlin.math.log
 
 
 class GameReplayActivity: ComponentActivity() {

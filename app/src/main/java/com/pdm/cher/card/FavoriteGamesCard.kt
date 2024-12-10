@@ -16,13 +16,9 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.sp
-import androidx.core.content.ContextCompat.startActivity
-import com.pdm.cher.activities.GameActivity
 import com.pdm.cher.activities.GameReplayActivity
-import com.pdm.cher.data.GameRepetition
 import com.pdm.cher.data.Player
-import com.pdm.cher.reversi.ReversiRepetition
-import java.io.FileInputStream
+
 
 @Composable
 fun FavoriteGamesCard(getAvailableRepetitions: (Array<String>) -> List<String>, currentPlayer: Player) {
