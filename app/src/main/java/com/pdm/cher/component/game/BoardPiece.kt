@@ -1,5 +1,6 @@
-package com.pdm.cher.component
+package com.pdm.cher.component.game
 
+import android.media.SoundPool
 import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -32,7 +33,10 @@ fun BoardPiece(
     onlineGame: MutableState<Game>,
     square: Square,
     playerColor: GameColor,
-    onPlayMade: (Game, GameColor, Int, Int) -> Unit)
+    soundPool: SoundPool,
+    soundId: Int,
+    onPlayMade: (Game, GameColor, Int, Int) -> Unit,
+    onPlaySound: (SoundPool, Int) -> Unit)
 {
     val context = LocalContext.current
     Box(
@@ -41,6 +45,7 @@ fun BoardPiece(
             .background(MaterialTheme.colorScheme.primary)
             .clickable {
                 try {
+                    onPlaySound(soundPool, soundId)
                     localGame.value = localGame.value.copy(reversi = localGame.value.reversi.makePlay(square.copy(color = playerColor)))
                     onPlayMade(onlineGame.value, playerColor, square.row, square.col)
                 } catch (e: Exception) {

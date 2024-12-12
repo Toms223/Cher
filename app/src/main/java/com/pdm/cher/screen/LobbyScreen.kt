@@ -14,9 +14,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.pdm.cher.component.LobbyPlayer
+import com.pdm.cher.component.lobby.LobbyPlayer
 import com.pdm.cher.component.MovingBackground
-import com.pdm.cher.component.ReceivedInvite
+import com.pdm.cher.component.lobby.ReceivedInvite
 import com.pdm.cher.data.Invite
 import com.pdm.cher.data.Player
 import kotlinx.coroutines.delay

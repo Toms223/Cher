@@ -1,4 +1,5 @@
-package com.pdm.cher.component
+package com.pdm.cher.component.replay
+
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -15,7 +16,7 @@ import com.pdm.cher.reversi.Square
 private val cellSize = 40.dp
 @Composable
 fun BoardReplayPiece(
-    square: Square
+    square: Square,
 ){
     Box(
         modifier = Modifier

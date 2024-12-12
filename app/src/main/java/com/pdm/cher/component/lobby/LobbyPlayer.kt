@@ -1,4 +1,4 @@
-package com.pdm.cher.component
+package com.pdm.cher.component.lobby
 
 
 import androidx.compose.foundation.background

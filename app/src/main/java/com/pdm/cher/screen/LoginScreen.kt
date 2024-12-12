@@ -7,6 +7,7 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import com.pdm.cher.component.Logo
 
@@ -37,7 +38,7 @@ fun LoginScreen(
             Logo()
             Spacer(modifier = Modifier.height(16.dp))
             TextField(value = rememberEmail.value, onValueChange = { rememberEmail.value = it  }, label = { Text("Email") })
-            TextField(value = rememberPassword.value, onValueChange = { rememberPassword.value = it  }, label = { Text("Password") })
+            TextField(value = rememberPassword.value, onValueChange = { rememberPassword.value = it  }, label = { Text("Password") }, visualTransformation = PasswordVisualTransformation())
             Button(onClick = {
                 onLogin(rememberEmail.value, rememberPassword.value)
             }) {

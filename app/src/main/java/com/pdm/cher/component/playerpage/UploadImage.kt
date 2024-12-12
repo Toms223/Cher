@@ -1,4 +1,4 @@
-package com.pdm.cher.component
+package com.pdm.cher.component.playerpage
 
 import android.content.Context
 import android.net.Uri

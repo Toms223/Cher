@@ -1,4 +1,4 @@
-package com.pdm.cher.component
+package com.pdm.cher.component.replay
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background

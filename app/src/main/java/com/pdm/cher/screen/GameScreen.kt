@@ -1,5 +1,6 @@
 package com.pdm.cher.screen
 
+import android.media.SoundPool
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.layout.Arrangement
@@ -12,9 +13,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.sp
-import com.pdm.cher.component.BoardPiece
-import com.pdm.cher.component.GameFinished
-import com.pdm.cher.component.GamePlayerInfo
+import com.pdm.cher.component.game.BoardPiece
+import com.pdm.cher.component.game.GameFinished
+import com.pdm.cher.component.game.GamePlayerInfo
 import com.pdm.cher.data.Game
 import com.pdm.cher.data.Player
 import kotlinx.coroutines.delay
@@ -29,8 +30,11 @@ fun GameScreen(
     opponentPlayer: Player,
     onlineGame: MutableState<Game>,
     localGame: MutableState<Game>,
+    soundPool: SoundPool,
+    soundId: Int,
     onRefreshGame: (MutableState<Game>, MutableState<Game>, GameColor) -> Unit,
     onPlayMade: (Game, GameColor, Int, Int) -> Unit,
+    onPlaySound: (SoundPool, Int) -> Unit,
     onSurrender: (Game, GameColor) -> Unit,
     onSaveGame: (Boolean, Player, Game) -> Unit,
     onEndGame: (Game) -> Unit,
@@ -62,7 +66,7 @@ fun GameScreen(
         rememberedLocalGame.reversi.board.forEach { row ->
             Row {
                 row.list.forEach { square ->
-                    BoardPiece(localGame, onlineGame, square, color, onPlayMade)
+                    BoardPiece(localGame, onlineGame, square, color, soundPool, soundId, onPlayMade, onPlaySound)
                 }
             }
         }

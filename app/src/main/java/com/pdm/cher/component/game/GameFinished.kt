@@ -1,6 +1,5 @@
-package com.pdm.cher.component
+package com.pdm.cher.component.game
 
-import android.content.Context
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -12,7 +11,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -21,12 +19,9 @@ import androidx.compose.ui.unit.sp
 import com.pdm.cher.data.Game
 import com.pdm.cher.data.Player
 import com.pdm.cher.reversi.GameState
-import com.pdm.cher.serialize
-import java.time.LocalDateTime
 
 @Composable
 fun GameFinished(currentPlayer: Player, game: Game, onExit: () -> Unit, onEndGame: (Game) -> Unit, onSaveGame: (Boolean, Player, Game) -> Unit) {
-    val context = LocalContext.current
     val reversi = game.reversi
     var favoriteGame by remember { mutableStateOf(false) }
     if(reversi.state != GameState.PLAYING && reversi.state != GameState.SKIPPED) {
@@ -80,12 +75,6 @@ fun GameFinished(currentPlayer: Player, game: Game, onExit: () -> Unit, onEndGam
         Button(onClick = {
             onEndGame(game)
             onSaveGame(favoriteGame, currentPlayer, game)
-            if(favoriteGame){
-                val date = LocalDateTime.now()
-                context.openFileOutput("$date-Game.txt", Context.MODE_PRIVATE).use {
-                    it.write(reversi.playsOrder.serialize().toByteArray())
-                }
-            }
             onExit()
         }) {
             Text("Exit Game")

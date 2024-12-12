@@ -22,6 +22,7 @@ data class Player(
     val email : String = "",
     val randomId : String = "#${(0..1000).random()}",
     val wins : Int = 0,
+    val losses: Int = 0,
     val imageURL : String = ""
 ) : Parcelable {
 

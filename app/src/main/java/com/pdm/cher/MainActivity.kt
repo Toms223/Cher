@@ -7,8 +7,6 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import com.google.firebase.FirebaseApp
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.storage.FirebaseStorage
 import com.pdm.cher.activities.PlayerPageActivity
 import com.pdm.cher.ui.theme.CherTheme
 import com.pdm.cher.screen.HelloPageScreen
@@ -17,13 +15,10 @@ import com.pdm.cher.viewmodels.PlayerInformationViewModel
 
 class MainActivity: ComponentActivity() {
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         FirebaseApp.initializeApp(this)
         val auth = FirebaseAuth.getInstance()
-        val firestore = FirebaseFirestore.getInstance()
-        val storage = FirebaseStorage.getInstance()
-        val playerInformationViewModel = PlayerInformationViewModel(firestore, auth, storage)
+        val playerInformationViewModel = PlayerInformationViewModel()
         super.onCreate(savedInstanceState)
         val user = auth.currentUser
         if (user != null && user.email != null) {

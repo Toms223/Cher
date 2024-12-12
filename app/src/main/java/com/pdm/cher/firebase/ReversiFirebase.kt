@@ -6,6 +6,7 @@ import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.asImageBitmap
 import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.storage
@@ -13,10 +14,25 @@ import com.pdm.cher.data.Invite
 import com.pdm.cher.data.Game
 import com.pdm.cher.data.Player
 import com.pdm.cher.hash256
+import com.pdm.cher.reversi.Color
 import kotlinx.coroutines.tasks.await
 
+private var instance: ReversiFirebase? = null
 
-class ReversiFirebase(db: FirebaseFirestore, private val auth: FirebaseAuth, private val storageRef: FirebaseStorage) {
+class ReversiFirebase {
+    companion object {
+        fun getInstance(): ReversiFirebase {
+            if (instance == null) {
+                instance = ReversiFirebase()
+            }
+            return instance!!
+        }
+    }
+
+    private val db = FirebaseFirestore.getInstance()
+    private val auth = FirebaseAuth.getInstance()
+    private val storageRef = FirebaseStorage.getInstance()
+
     private val lobbyCollection = db.collection("lobby")
     private val inviteCollection = db.collection("paringAwaiting")
     private val gamesCollection = db.collection("games")
@@ -92,6 +108,13 @@ class ReversiFirebase(db: FirebaseFirestore, private val auth: FirebaseAuth, pri
         }.firstOrNull() ?: throw FirebaseExceptions.PlayerNotInGame()
 
     suspend fun endGame(game: Game){
+        if(game.reversi.winner == Color.BLACK){
+            playersCollection.document(game.playerBlackEmail).update("wins", FieldValue.increment(1)).await()
+            playersCollection.document(game.playerWhiteEmail).update("losses", FieldValue.increment(1)).await()
+        } else {
+            playersCollection.document(game.playerWhiteEmail).update("wins", FieldValue.increment(1)).await()
+            playersCollection.document(game.playerBlackEmail).update("losses", FieldValue.increment(1)).await()
+        }
         gamesCollection.document(game.id).delete().await()
     }
 

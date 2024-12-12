@@ -1,5 +1,6 @@
 package com.pdm.cher.activities
 
+import android.media.SoundPool
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
@@ -7,10 +8,8 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
+import com.pdm.cher.R
 import com.pdm.cher.ui.theme.CherTheme
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.storage.FirebaseStorage
 import com.pdm.cher.screen.GameScreen
 import com.pdm.cher.data.Game
 import com.pdm.cher.data.Player
@@ -22,13 +21,9 @@ import java.time.LocalDateTime
 
 
 class GameActivity: ComponentActivity() {
-    val firestore = FirebaseFirestore.getInstance()
-    val auth = FirebaseAuth.getInstance()
-    val storage = FirebaseStorage.getInstance()
-    private val gameViewModel = GameViewModel(firestore, auth, storage)
+    private val gameViewModel = GameViewModel()
     private val onlineGame = mutableStateOf(Game())
     private val localGame = mutableStateOf(Game())
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         actionBar?.hide()
@@ -37,10 +32,15 @@ class GameActivity: ComponentActivity() {
         val opponentPlayer = intent.getParcelableExtra<Player>("opponentPlayer")
         onlineGame.value = Game(id = gameId)
         localGame.value = Game(id = gameId)
+        val soundPool = SoundPool.Builder()
+            .setMaxStreams(5) // Max simultaneous streams
+            .build()
+        val soundId = soundPool.load(this, R.raw.place_piece, 1)
         if (currentPlayer == null || opponentPlayer == null) {
             finish()
             return // Return because otherwise null-safety complains and I don't have a complaint book
         }
+
         setContent{
             CherTheme {
                 GameScreen(
@@ -48,14 +48,23 @@ class GameActivity: ComponentActivity() {
                     opponentPlayer,
                     onlineGame,
                     localGame,
+                    soundPool,
+                    soundId,
                     ::refreshGame,
                     ::makePlay,
+                    ::playSound,
                     ::surrender,
                     ::saveGame,
                     ::endGame,
-                    ::finish)
+                    ::finish
+                )
+
             }
         }
+    }
+
+    private fun playSound(soundPool: SoundPool, soundId: Int){
+        soundPool.play(soundId, 1F, 1F, 1, 0, 1F)
     }
 
     private fun endGame(game: Game){

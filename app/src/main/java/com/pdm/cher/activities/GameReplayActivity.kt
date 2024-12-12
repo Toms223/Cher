@@ -1,14 +1,13 @@
 package com.pdm.cher.activities
 
+import android.media.SoundPool
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.storage.FirebaseStorage
+import com.pdm.cher.R
 import com.pdm.cher.data.GameRepetition
 import com.pdm.cher.data.Player
 import com.pdm.cher.screen.GameReplayScreen
@@ -19,12 +18,9 @@ import com.pdm.cher.viewmodels.PlayerInformationViewModel
 
 
 class GameReplayActivity: ComponentActivity() {
-    private val firestore = FirebaseFirestore.getInstance()
-    private val auth = FirebaseAuth.getInstance()
-    private val storage = FirebaseStorage.getInstance()
     private val favoriteGamesViewModel = FavoriteGamesViewModel()
     private val gameRepetition = mutableStateOf(GameRepetition())
-    private val playerInformationViewModel = PlayerInformationViewModel(firestore, auth, storage)
+    private val playerInformationViewModel = PlayerInformationViewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,6 +30,10 @@ class GameReplayActivity: ComponentActivity() {
             finish()
             return
         }
+        val soundPool = SoundPool.Builder()
+            .setMaxStreams(5) // Max simultaneous streams
+            .build()
+        val soundId = soundPool.load(this, R.raw.place_piece, 1)
         val fileInputStream = openFileInput("$gameName-Game.txt")
         gameRepetition.value = favoriteGamesViewModel.loadGameRepetition(fileInputStream)
         val opponentPlayer = mutableStateOf(Player("Unknown", gameRepetition.value.opponentEmail))
@@ -41,12 +41,20 @@ class GameReplayActivity: ComponentActivity() {
             CherTheme {
                 GameReplayScreen(
                     gameRepetition,
-                    ::getPlayer,
                     currentPlayer,
-                    opponentPlayer
+                    opponentPlayer,
+                    soundPool,
+                    soundId,
+                    ::playSound,
+                    ::getPlayer,
+                    ::finish
                 )
             }
         }
+    }
+
+    private fun playSound(soundPool: SoundPool, soundId: Int){
+        soundPool.play(soundId, 1F, 1F, 1, 0, 1F)
     }
 
     private fun getPlayer(opponentPlayer: MutableState<Player>) {

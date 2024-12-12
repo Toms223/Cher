@@ -20,19 +20,19 @@ fun MovingBackground(content: @Composable () -> Unit) {
 
     // Animating the horizontal offset
     val offsetX by infiniteTransition.animateFloat(
-        initialValue = 0f,
-        targetValue = 600f, // Modify this to control the range of movement
+        initialValue = -500f,
+        targetValue = 500f, // Modify this to control the range of movement
         animationSpec = infiniteRepeatable(
-            animation = tween(durationMillis = 60000, easing = LinearEasing),
-            repeatMode = RepeatMode.Restart
+            animation = tween(durationMillis = 20000, easing = EaseInOutCubic),
+            repeatMode = RepeatMode.Reverse
         )
     )
     val offsetY by infiniteTransition.animateFloat(
-        initialValue = 0f,
-        targetValue = 600f, // Vertical range
+        initialValue = -500f,
+        targetValue = 500f, // Vertical range
         animationSpec = infiniteRepeatable(
-            animation = tween(durationMillis = 60000, easing = LinearEasing),
-            repeatMode = RepeatMode.Restart
+            animation = tween(durationMillis = 20000, easing = EaseInOutCubic),
+            repeatMode = RepeatMode.Reverse
         )
     )
     Box(

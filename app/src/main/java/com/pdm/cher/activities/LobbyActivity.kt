@@ -9,9 +9,6 @@ import androidx.activity.compose.setContent
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.graphics.ImageBitmap
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.storage.FirebaseStorage
 import com.pdm.cher.data.Invite
 import com.pdm.cher.ui.theme.CherTheme
 import com.pdm.cher.screen.LobbyScreen
@@ -22,12 +19,9 @@ import com.pdm.cher.viewmodels.LobbyViewModel
 import com.pdm.cher.viewmodels.PlayerInformationViewModel
 
 class LobbyActivity: ComponentActivity() {
-    private val firebaseFirestore = FirebaseFirestore.getInstance()
-    private val firebaseAuth = FirebaseAuth.getInstance()
-    private val firebaseStorage = FirebaseStorage.getInstance()
-    private val lobbyViewModel = LobbyViewModel(firebaseFirestore, firebaseAuth, firebaseStorage)
-    private val playerInformationViewModel = PlayerInformationViewModel(firebaseFirestore, firebaseAuth, firebaseStorage)
-    private val gameViewModel = GameViewModel(firebaseFirestore, firebaseAuth, firebaseStorage)
+    private val lobbyViewModel = LobbyViewModel()
+    private val playerInformationViewModel = PlayerInformationViewModel()
+    private val gameViewModel = GameViewModel()
 
     private val invitingPlayer = mutableStateOf<Player?>(null)
     private val lobbyPlayers = mutableStateOf(listOf<Player>())

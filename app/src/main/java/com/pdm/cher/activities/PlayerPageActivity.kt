@@ -8,9 +8,6 @@ import androidx.activity.compose.setContent
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.graphics.ImageBitmap
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.storage.FirebaseStorage
 import com.pdm.cher.screen.PlayerPageScreen
 import com.pdm.cher.data.Player
 import com.pdm.cher.ui.theme.CherTheme
@@ -20,11 +17,8 @@ import com.pdm.cher.viewmodels.PlayerInformationViewModel
 
 class PlayerPageActivity: ComponentActivity() {
     private val bitmapState = mutableStateOf<ImageBitmap?>(null)
-    private val firestore = FirebaseFirestore.getInstance()
-    private val auth = FirebaseAuth.getInstance()
-    private val storage = FirebaseStorage.getInstance()
     private val favoriteGamesViewModel = FavoriteGamesViewModel()
-    private val userInformationViewModel = PlayerInformationViewModel(firestore, auth, storage)
+    private val userInformationViewModel = PlayerInformationViewModel()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         actionBar?.hide()

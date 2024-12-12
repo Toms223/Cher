@@ -1,11 +1,9 @@
 package com.pdm.cher.screen
 
+import android.media.SoundPool
 import android.util.Log
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.KeyboardArrowLeft
 import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
@@ -19,17 +17,23 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.pdm.cher.component.*
+import com.pdm.cher.component.replay.BoardReplayPiece
+import com.pdm.cher.component.replay.GameReplayPlayerInfo
 import com.pdm.cher.data.GameRepetition
 import com.pdm.cher.data.Player
 
 @Composable
 fun GameReplayScreen(
     repetitionState: MutableState<GameRepetition>,
-    onGetPlayer: (MutableState<Player>) -> Unit,
     currentPlayer: Player,
     opponentPlayer:MutableState<Player>,
+    soundPool: SoundPool,
+    soundId: Int,
+    onPlaySound: (SoundPool, Int) -> Unit,
+    onGetPlayer: (MutableState<Player>) -> Unit,
+    onFinish: () -> Unit
 ) {
     LaunchedEffect(Unit) {
         onGetPlayer(opponentPlayer)
@@ -54,22 +58,33 @@ fun GameReplayScreen(
             }
         }
         GameReplayPlayerInfo(currentPlayer, opponentPlayer.value, repetitionState.value.opponentColor)
-        Button(onClick = {
-            gameRepetition =
-                gameRepetition.copy(
-                    reversiRepetition = gameRepetition.reversiRepetition.next()
-                )
-            repetitionState.value = gameRepetition
-        }) {
-            Icon(Icons.AutoMirrored.Default.KeyboardArrowRight, contentDescription = "Next")
+        Row {
+            Button(onClick = {
+                onPlaySound(soundPool, soundId)
+                repetitionState.value =
+                    gameRepetition.copy(
+                        reversiRepetition = gameRepetition.reversiRepetition.previous()
+                    )
+            }) {
+                Icon(Icons.AutoMirrored.Default.KeyboardArrowLeft, contentDescription = "Previous")
+            }
+            Spacer(modifier = Modifier.width(8.dp))
+            Button(onClick = {
+                onPlaySound(soundPool, soundId)
+                gameRepetition =
+                    gameRepetition.copy(
+                        reversiRepetition = gameRepetition.reversiRepetition.next()
+                    )
+                repetitionState.value = gameRepetition
+            }) {
+                Icon(Icons.AutoMirrored.Default.KeyboardArrowRight, contentDescription = "Next")
+            }
+
         }
         Button(onClick = {
-            repetitionState.value =
-                gameRepetition.copy(
-                    reversiRepetition = gameRepetition.reversiRepetition.previous()
-                )
+            onFinish()
         }) {
-            Icon(Icons.AutoMirrored.Default.KeyboardArrowLeft, contentDescription = "Previous")
+            Text("Leave")
         }
     }
 }

@@ -7,19 +7,13 @@ import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.runtime.mutableStateOf
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.storage.FirebaseStorage
 import com.pdm.cher.screen.RegisterScreen
 import com.pdm.cher.ui.theme.CherTheme
 import com.pdm.cher.viewmodels.FirebaseResult
 import com.pdm.cher.viewmodels.UserAuthViewModel
 
 class RegisterActivity: ComponentActivity() {
-    private val firestore = FirebaseFirestore.getInstance()
-    private val auth = FirebaseAuth.getInstance()
-    private val storage = FirebaseStorage.getInstance()
-    private val userAuthViewModel = UserAuthViewModel(firestore, auth, storage)
+    private val userAuthViewModel = UserAuthViewModel()
     override fun onCreate(savedInstanceState: Bundle?) {
         val username = mutableStateOf("")
         val email = mutableStateOf("")
@@ -39,7 +33,7 @@ class RegisterActivity: ComponentActivity() {
             userAuthViewModel.register(username, email, password){
                 when(it){
                     is FirebaseResult.Success -> {
-                        startActivity(Intent(this, LoginActivity::class.java).putExtra("player", it.data))
+                        startActivity(Intent(this, PlayerPageActivity::class.java).putExtra("player", it.data))
                     }
                     is FirebaseResult.Error -> {
                         Toast.makeText(this, it.message, Toast.LENGTH_SHORT).show()

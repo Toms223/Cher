@@ -1,6 +1,7 @@
 package com.pdm.cher.screen
 
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
@@ -31,6 +32,7 @@ fun PlayerPageScreen(
             shape = RectangleShape,
             modifier = Modifier
                 .fillMaxSize()
+                .background(MaterialTheme.colorScheme.background)
                 .graphicsLayer {
                     val pageOffset =
                         ((pagerState.currentPage - page) + pagerState.currentPageOffsetFraction)

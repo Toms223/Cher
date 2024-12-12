@@ -13,8 +13,9 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.pdm.cher.component.UploadImage
+import com.pdm.cher.component.playerpage.UploadImage
 import com.pdm.cher.data.Player
+import kotlin.math.abs
 
 @Composable
 fun ProfileCard(player: Player, uploadImage: (Player, ByteArray, MutableState<ImageBitmap?>) -> Unit, getImage: (String, MutableState<ImageBitmap?>) -> Unit, bitmapState: MutableState<ImageBitmap?>) {
@@ -25,9 +26,12 @@ fun ProfileCard(player: Player, uploadImage: (Player, ByteArray, MutableState<Im
         Text("${player.username}${player.randomId}", style = TextStyle(fontWeight = FontWeight.Black, fontSize = 40.sp))
         Spacer(modifier = Modifier.height(8.dp))
         player.getImage(bitmapState, getImage)
-        Spacer(modifier = Modifier.height(8.dp))
         UploadImage(uploadImage, player, bitmapState)
         Spacer(modifier = Modifier.height(8.dp))
-        Text("Wins: ${player.wins}",  style = TextStyle(fontWeight = FontWeight.Bold, fontSize = 20.sp))
+        Row(horizontalArrangement = Arrangement.SpaceEvenly, modifier = Modifier.fillMaxWidth()) {
+            Text("Wins: ${player.wins}",  style = TextStyle(fontWeight = FontWeight.Bold, fontSize = 20.sp))
+            Text("Losses: ${player.losses}",  style = TextStyle(fontWeight = FontWeight.Bold, fontSize = 20.sp))
+            Text("Draws: ${abs(player.wins - player.losses)}",  style = TextStyle(fontWeight = FontWeight.Bold, fontSize = 20.sp))
+        }
     }
 }

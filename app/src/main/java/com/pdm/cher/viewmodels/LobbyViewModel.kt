@@ -2,16 +2,14 @@ package com.pdm.cher.viewmodels
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.storage.FirebaseStorage
 import com.pdm.cher.data.Invite
 import com.pdm.cher.data.Player
 import com.pdm.cher.firebase.ReversiFirebase
 import kotlinx.coroutines.launch
 
-class LobbyViewModel(firestore: FirebaseFirestore, auth: FirebaseAuth, storage: FirebaseStorage): ViewModel() {
-    private val reversiFirebase = ReversiFirebase(firestore, auth, storage)
+class LobbyViewModel: ViewModel() {
+    private val reversiFirebase = ReversiFirebase.getInstance()
+
     fun enterLobby(player: Player, onResult: (FirebaseResult<List<Player>>) -> Unit) = viewModelScope.launch {
         try {
             reversiFirebase.enterLobby(player)
